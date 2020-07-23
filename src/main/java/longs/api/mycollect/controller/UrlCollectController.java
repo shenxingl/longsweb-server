@@ -14,7 +14,6 @@ public class UrlCollectController {
 
     /**
      * 根据条件查询url列表
-     *
      * @return R
      */
     @GetMapping("/getUrlList")
