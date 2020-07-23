@@ -22,59 +22,68 @@ public class UrlCollectService {
 
     /**
      * 根据条件查询url列表
-     *
      * @return R
      */
     public R getUrlList(int pageNo, int pageSize, String uf203, String uf101) {
-        Sort sort = new Sort(Sort.Direction.DESC,"uf204");
-        Pageable pageable = new PageRequest(pageNo, pageSize, sort);
-        Page<UrlCollectEntity> urlList;
-        if (uf101.equals("")) {
-            urlList = urlCollectRepo.findByUf203LikeAndUf205("%" + uf203 + "%","1",pageable);
-        } else {
-            urlList = urlCollectRepo.findByUf203LikeAndUf101AndUf205("%" + uf203 + "%",uf101,"1",pageable);
+        try {
+            Sort sort = new Sort(Sort.Direction.DESC, "uf204");
+            Pageable pageable = new PageRequest(pageNo, pageSize, sort);
+            Page<UrlCollectEntity> urlList;
+            if (uf101.equals("")) {
+                urlList = urlCollectRepo.findByUf203LikeAndUf205("%" + uf203 + "%", "1", pageable);
+            } else {
+                urlList = urlCollectRepo.findByUf203LikeAndUf101AndUf205("%" + uf203 + "%", uf101, "1", pageable);
+            }
+            return R.ok().put("urlList", urlList);
+        } catch (Exception ex) {
+            return R.error(-1, "查询url列表失败：" + ex.getMessage());
         }
-        return R.ok().put("urlList", urlList);
     }
 
     /**
      * 删除url
-     *
      * @return R
      */
     public R delUrl(String uf201) {
-        UrlCollectEntity newUrlEntity = urlCollectRepo.findByUf201(uf201);
-        if (newUrlEntity == null) {
-            return R.error(-1,"URL信息不存在！");
-        } else {
-            newUrlEntity.setUf205("0");
-            urlCollectRepo.save(newUrlEntity);
-            return R.ok();
+        try {
+            UrlCollectEntity newUrlEntity = urlCollectRepo.findByUf201(uf201);
+            if (newUrlEntity == null) {
+                return R.error(-1, "URL信息不存在！");
+            } else {
+                newUrlEntity.setUf205("0");
+                urlCollectRepo.save(newUrlEntity);
+                return R.ok();
+            }
+        } catch (Exception ex) {
+            return R.error(-1, "删除url失败：" + ex.getMessage());
         }
     }
 
     /**
      * 新增url
-     *
      * @return R
      */
     public R addUrl(String uf101, String uf202, String uf203) {
-        Long timeT = System.currentTimeMillis();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String uf204 = simpleDateFormat.format(new Date(timeT));
-        Random random = new Random();
-        int sjs1 = random.nextInt(10);
-        int sjs2 = random.nextInt(10);
-        String uf201 = "" + timeT + sjs1 + sjs2;
+        try {
+            Long timeT = System.currentTimeMillis();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String uf204 = simpleDateFormat.format(new Date(timeT));
+            Random random = new Random();
+            int sjs1 = random.nextInt(10);
+            int sjs2 = random.nextInt(10);
+            String uf201 = "" + timeT + sjs1 + sjs2;
 
-        UrlCollectEntity newUrlEntity = new UrlCollectEntity();
-        newUrlEntity.setUf101(uf101);
-        newUrlEntity.setUf201(uf201);
-        newUrlEntity.setUf202(uf202);
-        newUrlEntity.setUf203(uf203);
-        newUrlEntity.setUf204(uf204);
-        newUrlEntity.setUf205("1");
-        urlCollectRepo.save(newUrlEntity);
-        return R.ok();
+            UrlCollectEntity newUrlEntity = new UrlCollectEntity();
+            newUrlEntity.setUf101(uf101);
+            newUrlEntity.setUf201(uf201);
+            newUrlEntity.setUf202(uf202);
+            newUrlEntity.setUf203(uf203);
+            newUrlEntity.setUf204(uf204);
+            newUrlEntity.setUf205("1");
+            urlCollectRepo.save(newUrlEntity);
+            return R.ok();
+        } catch (Exception ex) {
+            return R.error(-1, "新增url失败：" + ex.getMessage());
+        }
     }
 }

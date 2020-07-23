@@ -28,7 +28,6 @@ public class UrlCollectController {
 
     /**
      * 新增url
-     *
      * @return R
      */
     @PostMapping("/addUrl")
@@ -42,7 +41,6 @@ public class UrlCollectController {
 
     /**
      * 作废url
-     *
      * @return R
      */
     @PostMapping("/delUrl")
