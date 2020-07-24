@@ -4,6 +4,7 @@ import longs.api.common.dao.entity.XtcsEntity;
 import longs.api.common.service.XtcsService;
 import longs.api.mycollect.dao.entity.FileEntity;
 import longs.api.mycollect.dao.repository.FileRepo;
+import longs.api.mycollect.service.FileService;
 import longs.api.until.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,16 +23,17 @@ public class FileController {
 
     @Autowired
     private XtcsService xtcsService;
-
     @Autowired
     private FileRepo fileRepo;
+    @Autowired
+    private FileService fileService;
 
     /**
      * 上传文件
      * @return R
      */
     @PostMapping("/upload")
-    public R upload(@RequestParam("file") MultipartFile file) throws IOException {
+    public R upload(@RequestParam("file") MultipartFile file) {
         try {
             List<XtcsEntity> basePathList = xtcsService.getXtcsByName("filebasepath");
             String basePath = basePathList.get(0).getCss003();
@@ -69,5 +71,17 @@ public class FileController {
         } catch (Exception ex) {
             return R.error(-1, "上传文件失败：" + ex.getMessage());
         }
+    }
+
+    /**
+     * 获取文件列表
+     * @return R
+     */
+    @GetMapping("/getFileList")
+    public R getFileList(
+            @RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "999") int pageSize,
+            @RequestParam(required = false, defaultValue = "") String fl103) {
+        return fileService.getUrlList(pageNo, pageSize, fl103);
     }
 }
