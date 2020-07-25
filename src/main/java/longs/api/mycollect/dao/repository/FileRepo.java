@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface FileRepo  extends JpaRepository<FileEntity, Long> {
 
     Page<FileEntity> findByFl103Like(String fl103, Pageable pageable);
+    FileEntity findByFl101(int fl101);
 }

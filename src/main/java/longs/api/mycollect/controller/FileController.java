@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -83,5 +84,14 @@ public class FileController {
             @RequestParam(defaultValue = "999") int pageSize,
             @RequestParam(required = false, defaultValue = "") String fl103) {
         return fileService.getUrlList(pageNo, pageSize, fl103);
+    }
+
+    /**
+     * 下载文件
+     * @return R
+     */
+    @GetMapping("/downloadFile")
+    public void downloadFile(@RequestParam int fl101,HttpServletResponse response) {
+        fileService.downloadFile(fl101, response);
     }
 }
