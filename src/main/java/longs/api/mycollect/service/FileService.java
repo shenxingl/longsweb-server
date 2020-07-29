@@ -21,11 +21,11 @@ public class FileService {
     private FileRepo fileRepo;
 
     /**
-     * 根据条件查询url列表
+     * 根据条件查询文件列表
      *
      * @return R
      */
-    public R getUrlList(int pageNo, int pageSize, String fl103) {
+    public R getFileList(int pageNo, int pageSize, String fl103) {
         try {
             Sort sort = new Sort(Sort.Direction.DESC, "fl107");
             Pageable pageable = new PageRequest(pageNo, pageSize, sort);
