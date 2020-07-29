@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 
 @Service
 public class FileService {
@@ -48,18 +49,17 @@ public class FileService {
             if (fileEntity == null) {
                 System.out.println("下载失败，请检查文件信息是否存在");
             } else {
-                String fileName = fileEntity.getFl105();
-                File file = new File(fileName);                                        // 获取文件
+                String filePath = fileEntity.getFl105();
+                File file = new File(filePath);                                        // 获取文件
                 InputStream is = new FileInputStream(file);                            //读取流
 
-                res.setHeader("content-type", "application/octet-stream");
-                res.setContentType("application/octet-stream");
                 res.setHeader("Content-Disposition", "attachment;");
+                res.setHeader("content-type", "application/octet-stream");
                 res.addHeader("Content-Length", String.valueOf(file.length()));
 
                 try {
                     if (is == null) {
-                        System.out.println("下载失败，请检查文件“" + fileName + "”是否存在");
+                        System.out.println("下载失败，请检查文件“" + filePath + "”是否存在");
                     }
                     //复制
                     IOUtils.copy(is, res.getOutputStream());
