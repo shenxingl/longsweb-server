@@ -46,14 +46,18 @@ public class FileService {
     public void downloadFile(int fl101, HttpServletResponse res) {
         try {
             FileEntity fileEntity = fileRepo.findByFl101(fl101);
+
             if (fileEntity == null) {
                 System.out.println("下载失败，请检查文件信息是否存在");
             } else {
+                String fileName = fileEntity.getFl103();
+                String downlaodFilename = URLEncoder.encode(fileName, "utf-8");
+
                 String filePath = fileEntity.getFl105();
                 File file = new File(filePath);                                        // 获取文件
                 InputStream is = new FileInputStream(file);                            //读取流
 
-                res.setHeader("Content-Disposition", "attachment;");
+                res.setHeader("Content-Disposition", "attachment; fileName=" + downlaodFilename);
                 res.setHeader("content-type", "application/octet-stream");
                 res.addHeader("Content-Length", String.valueOf(file.length()));
 
